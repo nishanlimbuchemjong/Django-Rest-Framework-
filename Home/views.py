@@ -52,6 +52,15 @@ class PersonAPIView(APIView):
         return Response(serializer.errors)
         return Response({'message': 'This is a POST request'})
 
+    def patch(self, request):
+        data = request.data
+        obj = Person.objects.get(id=data['id'])
+        serializer = PeopleSerializer(obj, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
+        return Response({'message': 'This is a PATCH request'})
 
 @api_view(['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
 def people(request):
