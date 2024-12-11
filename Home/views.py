@@ -43,6 +43,16 @@ class PersonAPIView(APIView):
         return Response(serializer.data)
         return Response({'message': 'This is a GET request'})
 
+    def post(self, request):
+        data = request.data
+        serializer = PeopleSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
+        return Response({'message': 'This is a POST request'})
+
+
 @api_view(['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
 def people(request):
     if request.method == 'GET':
