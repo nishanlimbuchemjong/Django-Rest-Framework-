@@ -10,8 +10,11 @@ def index(request):
         'course_provider': 'Scaler'
     }
     if request.method == 'GET':
-        print('you hit get method.')
+        print('you hit GET method.')
         return Response(courses)
     elif request.method == 'POST':
-        print('you hit post method.')
+        print('you hit POST method.')
+        return Response(courses)
+    elif request.method == 'POST':
+        print('you hit PUT method.')
         return Response(courses)
