@@ -2,6 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from Home.serializer import PeopleSerializer, LoginSerializer
 from Home.models import Person
+from rest_framework.views import APIView
 
 
 # Create your views here.
@@ -34,6 +35,13 @@ def login(request):
         print(data)
         return Response({'mesage': 'success'})
     return Response(serializer.errors)
+
+class PersonAPIView(APIView):
+    def get(self, request):
+        objs = Person.objects.filter(color__isnull=False)
+        serializer = PeopleSerializer(objs, many=True)
+        return Response(serializer.data)
+        return Response({'message': 'This is a GET request'})
 
 @api_view(['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
 def people(request):
