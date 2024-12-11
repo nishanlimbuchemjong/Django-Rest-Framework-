@@ -41,7 +41,6 @@ class PersonAPIView(APIView):
         objs = Person.objects.filter(color__isnull=False)
         serializer = PeopleSerializer(objs, many=True)
         return Response(serializer.data)
-        return Response({'message': 'This is a GET request'})
 
     def post(self, request):
         data = request.data
@@ -50,7 +49,6 @@ class PersonAPIView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors)
-        return Response({'message': 'This is a POST request'})
 
     def patch(self, request):
         data = request.data
@@ -60,7 +58,12 @@ class PersonAPIView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors)
-        return Response({'message': 'This is a PATCH request'})
+
+    def delete(self, request):
+        data = request.data
+        obj = Person.objects.get(id=data['id'])
+        obj.delete()
+        return Response({'message': 'person deleted'})
 
 @api_view(['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
 def people(request):
