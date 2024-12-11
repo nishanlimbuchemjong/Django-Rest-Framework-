@@ -1,11 +1,17 @@
 from rest_framework import serializers
-from .models import Person
+from .models import Person, Color
+
+class ColorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Color
+        fields = ['color_name']
 
 class PeopleSerializer(serializers.ModelSerializer):
+    color = ColorSerializer()
     class Meta:
         model = Person
         fields = '__all__'
-        depth = 1
+        # depth = 1
 
     def validate(self, data):
         special_characters = "!@#%^&*()-_+=,<>?/"
