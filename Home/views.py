@@ -4,6 +4,7 @@ from Home.serializer import PeopleSerializer, LoginSerializer
 from Home.models import Person
 from rest_framework.views import APIView
 from rest_framework import viewsets
+from rest_framework import status
 
 
 # Create your views here.
@@ -116,4 +117,4 @@ class PeopleViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(name__startswith = search)
         serializer = PeopleSerializer(queryset, many=True)
 
-        return Response({'status': 200, 'data': serializer.data})
+        return Response({'status': 200, 'data': serializer.data}, status=status.HTTP_204_NO_CONTENT)
