@@ -5,7 +5,24 @@ from Home.models import Person
 from rest_framework.views import APIView
 from rest_framework import viewsets
 from rest_framework import status
-from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+from rest_framework.authtoken.models import Token
+
+
+class LoginAPI(APIView):
+    def post(self, request):
+        data = request.data
+        serializer = LoginSerializer(data=data)
+        if not serializer.is_valid():
+            return Response({
+                'status': False,
+                'message': serializer.errors,
+            }, status.HTTP_400_BAD_REQUEST)
+        user = authenticate(username=serializer.data['username'], password=serializer.data['password'])
+
+        token = Token.objects.get_or_create(user=user)
+        return Response({'status': True, 'message': 'user login', 'token': str(token)}, status.HTTP_201_CREATED)
+
 
 class RegisterAPI(APIView):
     def post(self, request):
