@@ -154,7 +154,7 @@ def people(request):
 class PeopleViewSet(viewsets.ModelViewSet):
     serializer_class = PeopleSerializer
     queryset = Person.objects.all()
-
+    http_method_name = ['get','post']
     # search functionality
     def list(self, request):
         search = request.GET.get('search')
