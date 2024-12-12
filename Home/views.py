@@ -165,9 +165,20 @@ class PeopleViewSet(viewsets.ModelViewSet):
 
         return Response({'status': 200, 'data': serializer.data}, status=status.HTTP_204_NO_CONTENT)
 
-    @action(detail=False, methods=['post'])
-    def send_mail_to_person(self, request):
+    # @action(detail=False, methods=['post'])
+    # def send_mail_to_person(self, request):
+    #     return Response({
+    #         'status': True,
+    #         'message': 'email sent succes'
+    #     })
+
+    @action(detail=True, methods=['GET'])
+    def send_mail_to_person(self, request, pk):
+        obj = Person.objects.get(pk=pk)
+        serializer = PeopleSerializer(obj)
+        print(pk)
         return Response({
             'status': True,
-            'message': 'email sent succes'
+            'message': 'email sent succes',
+            'data': serializer.data
         })
