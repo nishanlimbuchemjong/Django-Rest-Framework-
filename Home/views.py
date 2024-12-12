@@ -7,7 +7,8 @@ from rest_framework import viewsets
 from rest_framework import status
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
-
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 
 class LoginAPI(APIView):
     def post(self, request):
@@ -70,6 +71,8 @@ def login(request):
     return Response(serializer.errors)
 
 class PersonAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
     def get(self, request):
         objs = Person.objects.filter(color__isnull=False)
         serializer = PeopleSerializer(objs, many=True)
