@@ -10,6 +10,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from django.core.paginator import Paginator
+from rest_framework.decorators import action
 
 class LoginAPI(APIView):
     def post(self, request):
@@ -163,3 +164,10 @@ class PeopleViewSet(viewsets.ModelViewSet):
         serializer = PeopleSerializer(queryset, many=True)
 
         return Response({'status': 200, 'data': serializer.data}, status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=False, methods=['post'])
+    def send_mail_to_person(self, request):
+        return Response({
+            'status': True,
+            'message': 'email sent succes'
+        })
