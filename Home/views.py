@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from Home.serializer import PeopleSerializer, LoginSerializer
 from Home.models import Person
 from rest_framework.views import APIView
+from rest_framework import viewsets
 
 
 # Create your views here.
@@ -103,3 +104,6 @@ def people(request):
         obj.delete()
         return Response({'message': 'person deleted'})
 
+class PeopleViewSet(viewsets.ModelViewSet):
+    serializer_class = PeopleSerializer
+    queryset = Person.objects.all()
