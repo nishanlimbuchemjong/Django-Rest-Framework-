@@ -75,12 +75,19 @@ class PersonAPIView(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
     def get(self, request):
-        objs = Person.objects.filter(color__isnull=False)
-        page = int(request.GET.get('page', 1))
-        page_size = 2
-        paginator = Paginator(objs, page_size)
-        serializer = PeopleSerializer(paginator.page(page), many=True)
-        return Response(serializer.data)
+        try:
+            objs = Person.objects.all()
+            page = int(request.GET.get('page', 1))
+            page_size = 2
+            paginator = Paginator(objs, page_size)
+            serializer = PeopleSerializer(paginator.page(page), many=True)
+            return Response(serializer.data)
+        except Exception as e:
+            return Response({
+                'status': False,
+                'message': 'Invalid page'
+            })
+
 
     def post(self, request):
         data = request.data
