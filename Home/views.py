@@ -107,3 +107,13 @@ def people(request):
 class PeopleViewSet(viewsets.ModelViewSet):
     serializer_class = PeopleSerializer
     queryset = Person.objects.all()
+
+    # search functionality
+    def list(self, request):
+        search = request.GET.get('search')
+        queryset = self.queryset
+        if search:
+            queryset = queryset.filter(name__startswith = search)
+        serializer = PeopleSerializer(queryset, many=True)
+
+        return Response({'status': 200, 'data': serializer.data})
