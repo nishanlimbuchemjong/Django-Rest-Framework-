@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
+from django.core.paginator import Paginator
 
 class LoginAPI(APIView):
     def post(self, request):
@@ -75,7 +76,10 @@ class PersonAPIView(APIView):
     authentication_classes = [TokenAuthentication]
     def get(self, request):
         objs = Person.objects.filter(color__isnull=False)
-        serializer = PeopleSerializer(objs, many=True)
+        page = int(request.GET.get('page', 1))
+        page_size = 2
+        paginator = Paginator(objs, page_size)
+        serializer = PeopleSerializer(paginator.page(page), many=True)
         return Response(serializer.data)
 
     def post(self, request):
